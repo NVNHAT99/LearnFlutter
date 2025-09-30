@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mynotes/views/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,16 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(),
+      home: const LoginScreen(),
     );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "89917508483",
+    "project_id": "mynotes-nph-project",
+    "storage_bucket": "mynotes-nph-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89917508483:android:464e831c72a7ea0301c4b6",
+        "android_client_info": {
+          "package_name": "com.nph.personalnotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAFp11FrGpGgNmTE1j_7lKYoYA9sNKJ9E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89917508483:android:e9d846d856c2f14b01c4b6",
+        "android_client_info": {
+          "package_name": "com.nphsotre.mynotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAFp11FrGpGgNmTE1j_7lKYoYA9sNKJ9E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
