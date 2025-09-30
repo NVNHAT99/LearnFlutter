@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +70,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         print('da vao day');
                         print(userCredential);
                       } on FirebaseException catch (error) {
-                        print(error);
+                        if (error.code == 'weak-password') {
+                          print('weak pasword');
+                        } else if (error.code == 'email-already-in-use') {
+                          print('eemail already in use');
+                        } else if (error.code == 'invalid-email') {
+                          print('invalid email');
+                        } else {
+                          print(error);
+                        }
                       }
                     },
                     child: const Text('Login'),
