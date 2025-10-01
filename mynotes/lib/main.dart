@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mynotes/views/authen_wrapper_view.dart';
 import 'package:mynotes/views/login_screen.dart';
+import 'package:mynotes/views/register_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +18,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const LoginScreen(),
+      home: const AuthenWrapper(),
+      routes: {
+        '/login/': (context) => const LoginScreen(),
+        '/register/': (context) => const RegisterScreen(),
+      },
     );
   }
 }
