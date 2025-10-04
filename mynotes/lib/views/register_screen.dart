@@ -1,7 +1,12 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mynotes/commonViews/error_dialog_view.dart';
+import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/firebase_options.dart';
+import 'dart:developer' as devtools show log;
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -61,25 +66,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       final password = _password.text;
                       try {
                         final userCredential = await FirebaseAuth.instance
-                            .signInWithEmailAndPassword(
+                            .createUserWithEmailAndPassword(
                               email: email,
                               password: password,
                             );
-                        print('da vao day');
-                        print(userCredential);
+                        devtools.log(userCredential.toString());
+                        if (context.mounted) {
+                          Navigator.of(context).pushNamed(verifyEmailRoute);
+                        }
                       } on FirebaseException catch (error) {
-                        if (error.code == 'weak-password') {
-                          print('weak pasword');
-                        } else if (error.code == 'email-already-in-use') {
-                          print('eemail already in use');
-                        } else if (error.code == 'invalid-email') {
-                          print('invalid email');
-                        } else {
-                          print(error);
+                        if (context.mounted) {
+                          if (error.code == 'weak-password') {
+                            await showErrorDialog(context, 'Weak password.');
+                          } else if (error.code == 'email-already-in-use') {
+                            await showErrorDialog(
+                              context,
+                              'Email already in use.',
+                            );
+                          } else if (error.code == 'invalid-email') {
+                            await showErrorDialog(context, 'Invalid Email.');
+                          } else {
+                            await showErrorDialog(
+                              context,
+                              'Error: ${error.code}',
+                            );
+                          }
+                        }
+                      } catch (error) {
+                        if (context.mounted) {
+                          await showErrorDialog(context, error.toString());
                         }
                       }
                     },
-                    child: const Text('Login'),
+                    child: const Text('Register'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(
+                        context,
+                      ).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+                    },
+                    child: const Text('Not registered yet? Register here.'),
                   ),
                 ],
               );

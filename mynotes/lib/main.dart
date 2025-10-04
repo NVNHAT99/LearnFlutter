@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mynotes/views/authen_wrapper_view.dart';
+import 'package:mynotes/views/email_verify_view.dart';
 import 'package:mynotes/views/login_screen.dart';
 import 'package:mynotes/views/notes_view.dart';
 import 'package:mynotes/views/register_screen.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         loginRoute: (context) => const LoginScreen(),
         registerRoute: (context) => const RegisterScreen(),
         notesRoute: (context) => const NotesView(),
+        verifyEmailRoute: (context) => const VerifyEmailView(),
       },
     );
   }
