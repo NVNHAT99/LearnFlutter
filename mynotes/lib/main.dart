@@ -3,6 +3,7 @@ import 'package:mynotes/views/authen_wrapper_view.dart';
 import 'package:mynotes/views/login_screen.dart';
 import 'package:mynotes/views/notes_view.dart';
 import 'package:mynotes/views/register_screen.dart';
+import 'package:mynotes/constants/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,9 +22,9 @@ class MyApp extends StatelessWidget {
       ),
       home: const AuthenWrapper(),
       routes: {
-        '/login/': (context) => const LoginScreen(),
-        '/register/': (context) => const RegisterScreen(),
-        '/notes/': (context) => const NotesView(),
+        loginRoute: (context) => const LoginScreen(),
+        registerRoute: (context) => const RegisterScreen(),
+        notesRoute: (context) => const NotesView(),
       },
     );
   }

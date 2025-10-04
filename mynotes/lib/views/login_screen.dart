@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
+import 'package:mynotes/constants/routes.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   @override
@@ -55,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       password: password,
                     );
                 devtools.log(userCredential.toString());
-                nav.pushNamedAndRemoveUntil('/notes/', (route) => false);
+                nav.pushNamedAndRemoveUntil(notesRoute, (route) => false);
               } on FirebaseException catch (error) {
                 devtools.log(error.toString());
               }
@@ -66,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed: () {
               Navigator.of(
                 context,
-              ).pushNamedAndRemoveUntil('/register/', (route) => false);
+              ).pushNamedAndRemoveUntil(registerRoute, (route) => false);
             },
             child: const Text('Not registered yet? Register here.'),
           ),
