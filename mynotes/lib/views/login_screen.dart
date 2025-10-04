@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/commonViews/error_dialog_view.dart';
 import 'dart:developer' as devtools show log;
@@ -59,8 +60,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       email: email,
                       password: password,
                     );
+                final user = FirebaseAuth.instance.currentUser;
                 devtools.log(userCredential.toString());
-                nav.pushNamedAndRemoveUntil(notesRoute, (route) => false);
+                if (user?.emailVerified ?? false) {
+                  nav.pushNamedAndRemoveUntil(notesRoute, (route) => false);
+                } else {
+                  nav.pushNamedAndRemoveUntil(
+                    verifyEmailRoute,
+                    (route) => false,
+                  );
+                }
               } on FirebaseException catch (error) {
                 if (context.mounted) {
                   if (error.code == 'user-not-found') {
