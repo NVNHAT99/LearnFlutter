@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mynotes/commonViews/error_dialog_view.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:mynotes/constants/routes.dart';
@@ -59,7 +62,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 devtools.log(userCredential.toString());
                 nav.pushNamedAndRemoveUntil(notesRoute, (route) => false);
               } on FirebaseException catch (error) {
+                if (context.mounted) {
+                  if (error.code == 'user-not-found') {
+                    devtools.log('User not found');
+                    await showErrorDialog(context, 'User not found.');
+                  } else if (error.code == 'wrong-password') {
+                    devtools.log('Wrong Password');
+                    await showErrorDialog(context, 'Wrong Password');
+                  } else {
+                    devtools.log(error.toString());
+                    await showErrorDialog(context, 'Error: ${error.code}');
+                  }
+                }
+              } catch (error) {
                 devtools.log(error.toString());
+                if (context.mounted) {
+                  await showErrorDialog(context, e.toString());
+                }
               }
             },
             child: const Text('Login'),
