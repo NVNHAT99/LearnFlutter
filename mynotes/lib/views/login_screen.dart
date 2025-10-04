@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as devtools show log;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -46,16 +47,17 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed: () async {
               final email = _email.text;
               final password = _password.text;
+              final nav = Navigator.of(context); // giữ reference trước
               try {
                 final userCredential = await FirebaseAuth.instance
                     .signInWithEmailAndPassword(
                       email: email,
                       password: password,
                     );
-                print('da vao day');
-                print(userCredential);
+                devtools.log(userCredential.toString());
+                nav.pushNamedAndRemoveUntil('/notes/', (route) => false);
               } on FirebaseException catch (error) {
-                print(error);
+                devtools.log(error.toString());
               }
             },
             child: const Text('Login'),
