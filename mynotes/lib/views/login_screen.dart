@@ -1,12 +1,9 @@
-import 'dart:math';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/commonViews/error_dialog_view.dart';
-import 'dart:developer' as devtools show log;
 
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/services/auth/auth_exceptions.dart';
+import 'package:mynotes/services/auth/auth_services.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -55,14 +52,12 @@ class _LoginScreenState extends State<LoginScreen> {
               final password = _password.text;
               final nav = Navigator.of(context); // giữ reference trước
               try {
-                final userCredential = await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                      email: email,
-                      password: password,
-                    );
-                final user = FirebaseAuth.instance.currentUser;
-                devtools.log(userCredential.toString());
-                if (user?.emailVerified ?? false) {
+                await AuthServices.firebase().login(
+                  email: email,
+                  password: password,
+                );
+                final user = AuthServices.firebase().currentUser;
+                if (user?.isEmailVerified ?? false) {
                   nav.pushNamedAndRemoveUntil(notesRoute, (route) => false);
                 } else {
                   nav.pushNamedAndRemoveUntil(
@@ -70,23 +65,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     (route) => false,
                   );
                 }
-              } on FirebaseException catch (error) {
+              } on UserNotFoundAuthException {
                 if (context.mounted) {
-                  if (error.code == 'user-not-found') {
-                    devtools.log('User not found');
-                    await showErrorDialog(context, 'User not found.');
-                  } else if (error.code == 'wrong-password') {
-                    devtools.log('Wrong Password');
-                    await showErrorDialog(context, 'Wrong Password');
-                  } else {
-                    devtools.log(error.toString());
-                    await showErrorDialog(context, 'Error: ${error.code}');
-                  }
+                  await showErrorDialog(context, 'User not found.');
                 }
-              } catch (error) {
-                devtools.log(error.toString());
+              } on WrongPasswordAuthException {
                 if (context.mounted) {
-                  await showErrorDialog(context, e.toString());
+                  await showErrorDialog(context, 'Wrong Password');
+                }
+              } on GenericAuthException {
+                if (context.mounted) {
+                  await showErrorDialog(context, 'Authentication Error');
                 }
               }
             },
