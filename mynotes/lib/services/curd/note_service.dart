@@ -9,18 +9,42 @@ class UnableToGetDocumentsDirectly implements Exception {}
 
 class DatabaseIsNotOpen implements Exception {}
 
+class CouldNotDeletedUser implements Exception {}
+
+class UserAlreadyExist implements Exception {}
+
 class NoteService {
   Database? _database;
 
-  Future<DatabaseUser> createUser({required String email}) async {
-    final db = _getDatabaseOrThrow();
+  Future<Database> createUser({required String email}) async {
+    final db = _database;
 
-    final result = await db.query(
+    final results = await db.query(
       userTable,
       limit: 1,
       where: 'email = ?',
       whereArgs: [email.toLowerCase()],
     );
+
+    if (results.isNotEmpty) {
+      throw UserAlreadyExist();
+    }
+
+    final userId = db.insert(userTable, {emailColumn: email.toLowerCase()});
+  }
+
+  Future<void> deleteUser({required String email}) async {
+    final db = _getDatabaseOrThrow();
+
+    final deleteAcount = await db.delete(
+      userTable,
+      where: 'email = ?',
+      whereArgs: [email.toLowerCase()],
+    );
+
+    if (deleteAcount != 1) {
+      throw CouldNotDeletedUser();
+    }
   }
 
   Database _getDatabaseOrThrow() {
