@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mynotes/firebase_options.dart';
 import 'package:mynotes/views/email_verify_view.dart';
 import 'package:mynotes/views/login_screen.dart';
-import 'package:mynotes/views/notes_view.dart';
+import 'package:mynotes/views/notes/notes_view.dart';
 
 class AuthenWrapper extends StatelessWidget {
   const AuthenWrapper({super.key});

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mynotes/constants/routes.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:mynotes/enums/menu_action.dart';
@@ -33,9 +34,15 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Main UI'),
+        title: const Text('Your Notes'),
         backgroundColor: Colors.blue,
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(newNoteRoute);
+            },
+            icon: Icon(Icons.add),
+          ),
           PopupMenuButton(
             onSelected: (value) async {
               switch (value) {
