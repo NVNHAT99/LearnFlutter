@@ -1,9 +1,10 @@
 import 'dart:async';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'dart:developer' as devTools show log;
 
 class DatabaseAlreadyOpenException implements Exception {}
 
@@ -86,11 +87,7 @@ class NoteService {
     final notes = await db.query(noteTable);
 
     final results = notes.map((noteRow) => DatabaseNote.fromRow(noteRow));
-    if (results.isEmpty) {
-      throw CouldNotFindNotes();
-    } else {
-      return results;
-    }
+    return results;
   }
 
   Future<DatabaseNote> getNote({required int id}) async {
@@ -178,7 +175,7 @@ class NoteService {
       whereArgs: [email.toLowerCase()],
     );
 
-    if (result.isNotEmpty) {
+    if (result.isEmpty) {
       throw CouldNotFindUser();
     } else {
       return DatabaseUser.fromRow(result.first);
@@ -268,7 +265,7 @@ class NoteService {
       // create user table
       await db.execute(createUserTable);
 
-      const createNoteTable = '''CREATE TABLE "NOTE" (
+      const createNoteTable = '''CREATE TABLE IF NOT EXISTS "NOTE" (
           "id"	INTEGER NOT NULL,
           "user_id"	INTEGER NOT NULL,
           "text"	TEXT,
