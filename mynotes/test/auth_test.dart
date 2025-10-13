@@ -67,7 +67,7 @@ class MockAuthProvider implements BaseAuthProvider {
   Future<AuthUser?> login({required String email, required String password}) {
     if (email == 'foo@bar.com') throw UserNotFoundAuthException();
     if (password == 'foobar') throw WrongPasswordAuthException();
-    const user = AuthUser(isEmailVerified: false);
+    const user = AuthUser(email: 'hello@gmail.com', isEmailVerified: false);
     _user = user;
     return Future.value(user);
   }
@@ -76,7 +76,7 @@ class MockAuthProvider implements BaseAuthProvider {
   Future<void> sendEmailVerification() {
     final user = _user;
     if (user == null) throw UserNotFoundAuthException();
-    const newUser = AuthUser(isEmailVerified: true);
+    const newUser = AuthUser(email: 'hello@gmail.com', isEmailVerified: true);
     _user = newUser;
     return Future.value();
   }
